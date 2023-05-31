@@ -20,9 +20,9 @@ WireIRData = Union[BytesLike, int, float]
 
 KVFormatSpec = Sequence[
     Union[
-        Tuple[str, str], # name, type
-        Tuple[str, 'KVFormatSpec'], # name, other_schema
-        Tuple[str, str, 'KVFormatSpec'], # name, type, other_schema
+        Tuple[str, str],  # name, type
+        Tuple[str, "KVFormatSpec"],  # name, other_schema
+        Tuple[str, str, "KVFormatSpec"],  # name, type, other_schema
     ]
 ]
 
@@ -32,7 +32,6 @@ class WireIR(TypedDict):
     id: int
     wire_type: int
     data: WireIRData
-
 
 class BadFormatString(ValueError): ...
 class CodecError(Exception): ...
@@ -44,7 +43,12 @@ class EndOfMessage(EOFError):
 class Wire:
     logger: logging.Logger
     allow_sparse_dict: bool
-    def __init__(self, fmt: FormatSpec, vint_2sc_max_bits: Optional[int] = ..., allow_sparse_dict: bool = ...) -> None: ...
+    def __init__(
+        self,
+        fmt: FormatSpec,
+        vint_2sc_max_bits: Optional[int] = ...,
+        allow_sparse_dict: bool = ...,
+    ) -> None: ...
     @property
     def vint_2sc_max_bits(self) -> int: ...
     @vint_2sc_max_bits.setter
@@ -59,6 +63,8 @@ class Wire:
     def decode_raw(self, data: BytesLike) -> WireIR: ...
 
 def encode(fmtstr: FormatSpec, *stuff: Any) -> bytes: ...
-def decode(fmtstr: FormatSpec, data: BytesLike) -> Union[Sequence[Any], Dict[str, Any]]: ...
+def decode(
+    fmtstr: FormatSpec, data: BytesLike
+) -> Union[Sequence[Any], Dict[str, Any]]: ...
 def encode_raw(objs: WireIR) -> bytes: ...
 def decode_raw(data: BytesLike) -> WireIR: ...
